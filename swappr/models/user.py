@@ -7,12 +7,10 @@ __all__ = ["User"]
 class User(Base):
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.Text)
-    email = sa.Column(sa.Text)
     employee_id = sa.Column(sa.Integer)
 
-    def __init__(self, name=None, email=None, employee_id=None):
+    def __init__(self, name=None, employee_id=None):
         self.name = name
-        self.email = email
         self.employee_id = employee_id
 
     def __repr__(self):

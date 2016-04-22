@@ -22,5 +22,5 @@ def test_db_with_bob():
 
 
 @app.teardown_appcontext
-def shutdown_session():
+def shutdown_session(exception=None):
     db_session.remove()

@@ -1,7 +1,7 @@
 """
 Views for the User model.
 """
-from flask import Blueprint, render_template, url_for, redirect
+from flask import Blueprint, render_template, url_for, redirect, session
 from flask_oauthlib.client import OAuth
 from flask_login import login_required, login_user, logout_user
 from swappr import login_manager, app
@@ -13,17 +13,26 @@ user = Blueprint('user', __name__, url_prefix='/user')
 oauth = OAuth(app)
 tanda_auth = oauth.remote_app(
     'tanda',
-    base_url='',
+    base_url='https://my.tanda.co/api/v2/',
     request_token_url=None,
+    request_token_params={'scope': 'me roster timesheet user cost'},
     access_token_url='https://my.tanda.co/api/oauth/token',
     authorize_url='https://my.tanda.co/api/oauth/authorize',
     app_key='TANDA'
 )
 
 
+@tanda_auth.tokengetter
+def get_token():
+    if 'tanda_oauth' in session:
+        resp = session['tanda_oauth']
+        return resp['access_token'], None
+
+
 @login_manager.user_loader
 def user_loader(user_id):
     return db_session.query(User).filter(User.id == user_id).one()
+
 
 @user.route('/')
 @user.route('/account')
@@ -48,12 +57,12 @@ def delete():
 @user.route('/login')
 def login():
     """
-    Redirects to github oauth which redirects to /authorize
+    Redirects to tanda oauth which redirects to /authorize
     """
     if app.testing:
         callback_url = url_for('user.authorize', _external=True)
     else:
-        callback_url = 'https://codegolf.uqcs.org.au/user/authorize'
+        callback_url = 'TODO: put in the URL'
     return tanda_auth.authorize(callback=callback_url)
 
 
@@ -71,13 +80,17 @@ def logout():
 @user.route('/authorize')
 def authorize():
     """
-    Use information from github oauth log in to either create a new user or log in as an existing user.
+    Use information from tanda oauth log in to either create a new user or log in as an existing user.
     """
     resp = tanda_auth.authorized_response()
-    user_info = tanda_auth.get('user', token=(resp["access_token"],)).data
-    u = db_session.query(User).filter(User.email == user_info['email']).first()
+    if resp is None:
+        return redirect(url_for('index'))
+    session['tanda_oauth'] = resp
+    user_info = tanda_auth.get('users/me', token=(resp["access_token"],)).data
+    print(user_info)
+    u = db_session.query(User).filter(User.employee_id == user_info['id']).first()
     if not u:
-        u = User(user_info['login'], user_info['email'])
+        u = User(user_info['name'], user_info['id'])
         db_session.add(u)
         db_session.commit()
     login_user(u, remember=True)
