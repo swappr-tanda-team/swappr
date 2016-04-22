@@ -4,7 +4,7 @@ MAINTAINER 	Dave Finster <davefinster@me.com>
 
 WORKDIR /usr/app
 
-RUN pip install flask sqlalchemy 
+RUN pip install flask sqlalchemy Flask-Login Flask-OAuthLib
 
 EXPOSE 5000
 
