@@ -7,6 +7,7 @@ from flask_login import login_required, login_user, logout_user
 from swappr import login_manager, app
 from swappr.database import db_session
 from swappr.models import User
+import pprint
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
@@ -41,6 +42,7 @@ def account():
     """
     View list of submissions for a given user and their total points
     """
+    get_users()
     return render_template('user/account.html')
 
 
@@ -87,7 +89,6 @@ def authorize():
         return redirect(url_for('index'))
     session['tanda_oauth'] = resp
     user_info = tanda_auth.get('users/me', token=(resp["access_token"],)).data
-    print(user_info)
     u = db_session.query(User).filter(User.employee_id == user_info['id']).first()
     if not u:
         u = User(user_info['name'], user_info['id'])
@@ -95,3 +96,9 @@ def authorize():
         db_session.commit()
     login_user(u, remember=True)
     return redirect(url_for('index'))
+
+
+# Example API Call
+def get_users():
+    users = tanda_auth.get('users').data
+    pprint.pprint(users)
