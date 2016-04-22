@@ -5,17 +5,25 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{%  block title %} swappr {% endblock %}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     {% block css %}{% endblock %}
   </head>
   <body>
     <div id="container">
-      <div id="header">
+      <div id="header" class="nav">
         <div id="project-name" class="float-left code">
           <a href="{{ url_for('index') }}"> swappr ></a>
         </div>
         <div id="large-menu" class="float-left show-for-medium code">
           &nbsp;
           <a {%if request.endpoint == "index"%} class="active" {%endif%} href="{{ url_for('index') }}">Home</a>
+        </div>
+        <div class="float-left">
+          <a href="{{ url_for('your_shifts') }}">Your Shifts</a>
         </div>
         <div id="account-btns" class="float-right">
           {% if current_user.is_authenticated %}
