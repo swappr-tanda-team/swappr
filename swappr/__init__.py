@@ -1,10 +1,28 @@
+import os
 from flask import Flask
+from flask_login import LoginManager
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///swappr.db'
+app.config['TANDA'] = {
+    'consumer_key': os.environ['SWAPPR_TANDA_API_KEY'],
+    'consumer_secret': os.environ['SWAPPR_TANDA_API_SECRET'],
+}
+app.config['SECRET_KEY'] = os.environ['SWAPPR_SECRET_KEY']
+app.testing = True
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "user.login"
+login_manager.login_message = "Log In Please"
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+from .models import *
 
-if __name__ == '__main__':
-    app.run()
+from .user import user as user_bp
+
+BLUEPRINTS = [user_bp]
+
+for blueprint in BLUEPRINTS:
+    app.register_blueprint(blueprint)
+
+from . import views

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{%  block title %} swappr {% endblock %}</title>
+    {% block css %}{% endblock %}
+  </head>
+  <body>
+    <div id="container">
+      <div id="header">
+        <div id="project-name" class="float-left code">
+          <a href="{{ url_for('index') }}"> swappr ></a>
+        </div>
+        <div id="large-menu" class="float-left show-for-medium code">
+          &nbsp;
+          <a {%if request.endpoint == "index"%} class="active" {%endif%} href="{{ url_for('index') }}">Home</a>
+        </div>
+        <div id="account-btns" class="float-right">
+          {% if current_user.is_authenticated %}
+            <a class="hollow button small" href="{{  url_for('user.account') }}">{{ current_user.name }}</a>
+          {% else %}
+            <a class="hollow button small" href="{{ url_for('user.login') }}">Login / Signup</a>
+          {% endif %}
+        </div>
+      </div>
+      <div id="content">
+      {% block body %}
+        #body content here
+      {% endblock %}
+      </div>
+    </div>
+    <div id="footer">
+      <div class="column small-4">
+        <ul class="no-bullet float-center" style="width: 100px;">
+          <li class="footer-link-head">Swappr</li>
+          <li><a href="{{ url_for('index') }}" class="light-link">Home</a></li>
+          <li><a href="{{ url_for('user.login') }}" class="light-link">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

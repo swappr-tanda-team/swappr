@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block css %}
+{% endblock %}
+{% block body %}
+  <br>
+  <div class="row">
+    <div class="small-12 text-center">
+      <h1>Welcome {{ current_user.name }}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column small-12 medium-6 medium-offset-3"
+         style="background-color: #e3e3e3">
+      <ul class="no-bullet text-center" style="padding-top: 30px;">
+        <li><a href="{{ url_for('user.logout') }}" class="button account-btn">Logout</a>
+        </li>
+        <li><a href="{{ url_for('user.delete') }}"
+               class="button account-btn btn-warning">Delete Account</a></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
