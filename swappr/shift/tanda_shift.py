@@ -53,6 +53,10 @@ def fetch_offered_shifts():
     shifts = db_session.query(Shift).filter(Shift.taker is None)
     return shifts
 
+def take_offered_shift(shift_id, taker_id):
+    shift = db_session.query(Shift).filter(Shift.schedule_id == shift_id).one()
+    shift.taker = taker_id
+    db_session.commit()
 
 #this method can only be called by a manager!!!
 def replace_user_in_schedule(user_id, schedule_id):
