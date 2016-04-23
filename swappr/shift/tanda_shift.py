@@ -8,16 +8,34 @@ from swappr.database import db_session
 from swappr.models import Shift
 import swappr.god_request
 import json
+import datetime
 
 #Might be benificial to cache roster?
 
 def fetch_current_user_upcoming_shifts():
     shift_info = tanda_auth.get('rosters/current').data
     valid_shifts = []
-    if not shift_info or "schedules" not in shift_info:  #Make sure we don't access empty dictionary
+    if not shift_info or "schedules" not in shift_info:  # Make sure we don't access empty dictionary
         return valid_shifts
     for i in range(len(shift_info["schedules"])):
-        #at this point, we examining all the schedules for a particular day
+        # at this point, we examining all the schedules for a particular day
+        for j in range(len(shift_info["schedules"][i]["schedules"])):
+            sched_item = shift_info["schedules"][i]["schedules"][j]
+            if (sched_item["user_id"] == current_user.employee_id):
+                sched_item["date"] = shift_info["schedules"][i]["date"]
+                sched_item["adjusted_start"] = sched_item["start"] + current_user.utc_offset
+                sched_item["adjusted_finish"] = sched_item["finish"] + current_user.utc_offset
+                valid_shifts.append(sched_item)
+    return valid_shifts
+
+def fetch_current_user_shifts_for_date(delta):
+    target_date = (datetime.datetime.now() + datetime.timedelta(int(delta))).strftime('%Y-%m-%d')
+    shift_info = tanda_auth.get('rosters/on/{}'.format(target_date)).data
+    valid_shifts = []
+    if not shift_info or "schedules" not in shift_info:  # Make sure we don't access empty dictionary
+        return valid_shifts
+    for i in range(len(shift_info["schedules"])):
+        # at this point, we examining all the schedules for a particular day
         for j in range(len(shift_info["schedules"][i]["schedules"])):
             sched_item = shift_info["schedules"][i]["schedules"][j]
             if (sched_item["user_id"] == current_user.employee_id):
