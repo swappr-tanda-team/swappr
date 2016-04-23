@@ -4,6 +4,8 @@ Methods for interacting with Tanda shifts
 from flask import session
 from flask_login import current_user
 from swappr.user.tanda_api import tanda_auth
+from swappr.database import db_session
+from swappr.models import Shift
 import swappr.god_request
 import json
 
@@ -40,6 +42,16 @@ def fetch_vacant_shifts():
                 sched_item["adjusted_finish"] = sched_item["finish"] + current_user.utc_offset
                 vacant_shifts.append(sched_item)
     return vacant_shifts
+
+def offer_this_shift(id):
+    shift = tanda_auth.get('schedules/' + id, "true").data
+    shift_offer = Shift(shift["id"], shift["user_id"], shift["start"], shift["finish"], shift["location"], shift["department_id"])
+    db_session.add(shift_offer)
+
+def fetch_offered_shifts():
+    shifts = []
+    shifts = db_session.query(Shift)
+    return shifts
 
 
 #this method can only be called by a manager!!!
