@@ -19,8 +19,9 @@ login_manager.login_message = "Log In Please"
 from .models import *
 
 from .user import user as user_bp
+from .shift import shift as shift_bp
 
-BLUEPRINTS = [user_bp]
+BLUEPRINTS = [user_bp, shift_bp]
 
 for blueprint in BLUEPRINTS:
     app.register_blueprint(blueprint)

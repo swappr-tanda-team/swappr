@@ -49,7 +49,6 @@ def login():
         callback_url = 'TODO: put in the URL'
     return auth.authorize(callback=callback_url)
 
-
 @user.route("/logout")
 @login_required
 def logout():
