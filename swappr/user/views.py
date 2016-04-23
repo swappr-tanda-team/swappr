@@ -72,7 +72,8 @@ def authorize():
     user_info = auth.get('users/me', token=(resp["access_token"],)).data
     u = db_session.query(User).filter(User.employee_id == user_info['id']).first()
     if not u:
-        u = User(user_info['name'], user_info['id'])
+        print(user_info)
+        u = User(user_info['name'], user_info['id'], user_info["utc_offset"], user_info["time_zone"])
         db_session.add(u)
         db_session.commit()
     login_user(u, remember=True)
