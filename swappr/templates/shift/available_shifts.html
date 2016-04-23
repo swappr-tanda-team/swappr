@@ -35,13 +35,14 @@
             {% endif %}
         {% endfor %}
     </tr>
-    {% for i, shift in shifts %}
+    {% for shift in available_shifts %}
         {% set start_time = datetime.utcfromtimestamp(shift.adjusted_start) %}
         {% set end_time = datetime.utcfromtimestamp(shift.adjusted_finish) %}
         {% set day = start_time.isoweekday() %}
         <tr>
             {% for j in range(-1, 24*7) %}
-                {% if i == 0 %}
+                <script>console.log("printing")</script>
+                {% if loop.index0 == 0 %}
                     <td>Shift "{{loop.index0 + 1}}"</td>
                 {% elif j // 24 == day and start_time.hour <= j % 24 < end_time.hour %}
                     <td style="background-color: green"></td>
@@ -53,7 +54,7 @@
     {% endfor %}
 </table>
 </div>
-    <script>console.log("{{available_shifts}}");</script>
+    <script>console.log("{{available_shifts}}");</script><!--
 {% for shift in available_shifts %}
     {% set start_time = datetime.utcfromtimestamp(shift.adjusted_start) %}
     {% set end_time = datetime.utcfromtimestamp(shift.adjusted_finish) %}
@@ -82,6 +83,7 @@
         }
     </script>
 {% endfor %}
+-->
 </div>
 </div>
 </div>
