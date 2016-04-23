@@ -31,3 +31,13 @@ def user_shifts():
 def offer(id):
     tanda_shift.offer_this_shift(id)
     return "Added shift " + str(id)
+
+@shift.route('/available')
+@login_required
+def available_shifts():
+    """
+    List the shifts that are available to be taken
+    """
+    shifts = tanda_shift.fetch_offered_shifts()
+    return render_template('shift/available_shifts.html', available_shifts=shifts, days=day_name,
+                           datetime=datetime)
