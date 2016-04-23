@@ -19,10 +19,10 @@
     </tr>
 {% for shift in authed_shifts %}
     <tr>
-        <td>{shift.start_time}</td>
-        <td>{shift.end_time}</td>
-        <td>{shift.employee_name}</td>
-        <td>{shift.taker_name}</td>
+        <td>{{shift.start_time}}</td>
+        <td>{{shift.end_time}}</td>
+        <td>{{shift.employee_name}}</td>
+        <td>{{shift.taker_name}}</td>
         <td>
             <button onclick="$.post('/manage/' + '{{shift.schedule_id}}' + '/True', {}, function(response) {});">Accept</button>
             <button onclick="$.post('/manage/' + '{{shift.schedule_id}}' + '/False', {}, function(response) {});">Deny</button>

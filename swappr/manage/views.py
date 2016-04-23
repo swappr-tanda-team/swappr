@@ -17,21 +17,24 @@ def manage_shifts():
     """
     List the shifts that belong to the user
     """
-    if not current_user.is_manager:
-        return redirect(url_for('index'))
-    shifts = db_session.query(Shift)
-    dept_ids = []
-    for shift in shifts:
-        dept_ids.append(shift.department_id)
-    authed_dept_ids = []
-    for dept_id in dept_ids:
-        print(dept_id)
-        managers = tanda_api.get_managers_for_department(dept_id)
-        for manager in managers:
-            if manager['id'] == current_user.employee_id:
-                authed_dept_ids.append(dept_id)
-                break
-    authed_shifts = db_session.query(Shift).filter(Shift.department_id in authed_dept_ids and not Shift.taken)
+    # if not current_user.is_manager:
+    #     return redirect(url_for('index'))
+    # shifts = db_session.query(Shift)
+    # dept_ids = []
+    # for shift in shifts:
+    #     dept_ids.append(shift.department_id)
+    # authed_dept_ids = []
+    # for dept_id in dept_ids:
+    #     print(dept_id)
+    #     managers = tanda_api.get_managers_for_department(dept_id)
+    #     print(managers)
+    #     for manager in managers:
+    #         print(manager)
+    #         print(current_user.employee_id)
+    #         if manager['id'] == current_user.employee_id:
+    #             authed_dept_ids.append(dept_id)
+    #             break
+    authed_shifts = [s for s in db_session.query(Shift).filter(Shift.taker is not None)]
     return render_template('manage/manage.html', authed_shifts=authed_shifts, respond_method=respond_to_shift)
 
 
@@ -46,5 +49,5 @@ def respond_to_shift(shift_id, accepted=True):
         db_session.commit()
         return
     tanda_shift.replace_user_in_schedule(shift.employee_id, shift_id)
-    db_session.session.delete(shift)
+    db_session.delete(shift)
     db_session.commit()
