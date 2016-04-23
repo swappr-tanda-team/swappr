@@ -2,62 +2,14 @@
 {% block css %}
 {% endblock %}
 {% block body %}
-<div class="row">
-    <div id="info" class="col-md-12">
-        <h3>Your Shifts</h3>
+    <div class="panel-heading">
+        <div class="row">
+            <div id="info" class="col-md-12">
+                <h4>Your Shifts</h4>
+            </div>
+        </div>
     </div>
-</div>
-<div id="your_shifts" class="col-md-12">
-<table class="shiftTable" border="1">
-    {% for i in range(-1, 24) %}
-        <tr>
-            {% for j in range(-1, 7) %}
-                {% if j == -1 and i >= 0 %}
-                    <td>{{i}}:00</td>
-                {% elif i == -1 and j > -1 %}
-                    <td>{{days[j]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-    {% endfor %}
-</table>
-<!--
-<table class="shiftTable">
-    <tr>
-        <td colspan="2" class="borderedCell">
-            Something 1
-            <p>Something 2</p>
-        </td>
-        <td>
-            Something 5
-            <p>Something 6</p>
-        </td>
-        <td class="borderedCell">
-            Something 7
-            <p>Something 8</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Something 1
-            <p>Something 2</p>
-        </td>
-        <td class="borderedCell">
-            Something 3
-            <p>Something 4</p>
-        </td>
-        <td>
-            Something 5
-            <p>Something 6</p>
-        </td>
-        <td>
-            Something 7
-            <p>Something 8</p>
-        </td>
-    </tr>
-</table>
+    <div class="panel-body">
 <div id="your_shifts" class="col-md-12 shifts">
   {% set scaling = 20 %}
   <div class="col-md-2">
@@ -75,9 +27,7 @@
       {% for hour in range(0, 25) %}
         <line x1="{{0}}" y1="{{hour*scaling}}" x2="700" y2="{{hour*scaling}}" stroke="#000000"></line>
       {% endfor %}
-      -->
       <!-- height is shift length in hours * scaling, width is 100, x is day * 100, y is start time in hours * scaling -->
-<!--
       {% for shift in upcoming_shifts %}
         <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) / 3600 * scaling}}" width="100"
               x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}"
@@ -85,8 +35,8 @@
       {% endfor %}
     </svg>
   </div>
-  -->
 </div>
 </div>
+    </div>
 
 {% endblock %}
