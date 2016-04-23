@@ -7,20 +7,10 @@ from flask_login import login_required, current_user
 from swappr import login_manager, app
 from swappr.database import db_session
 from swappr.models import User
+from swappr.user.tanda_api import tanda_auth
 import pprint
 
 shift = Blueprint('shift', __name__, url_prefix='/shift')
-
-oauth = OAuth(app)
-tanda_auth = oauth.remote_app(
-    'tanda',
-    base_url='https://my.tanda.co/api/v2/',
-    request_token_url=None,
-    request_token_params={'scope': 'me roster timesheet user cost'},
-    access_token_url='https://my.tanda.co/api/oauth/token',
-    authorize_url='https://my.tanda.co/api/oauth/authorize',
-    app_key='TANDA'
-)
 
 
 @shift.route('/me')
