@@ -51,9 +51,13 @@ def offer_this_shift(id):
 
 def fetch_offered_shifts():
     shifts = db_session.query(Shift).filter(Shift.taker is None)
-    shifts["adjusted_start"] = shifts["start"] + current_user.utc_offset
-    shifts["adjusted_finish"] = shifts["finish"] + current_user.utc_offset
-    return shifts
+    actual_shifts = [shift for shift in shifts]
+    print("Shift is:")
+    print(actual_shifts)
+    for shift in actual_shifts:
+        shift["adjusted_start"] = shift["start"] + current_user.utc_offset
+        shift["adjusted_finish"] = shift["finish"] + current_user.utc_offset
+    return actual_shifts
 
 def take_offered_shift(shift_id, taker_id):
     shift = db_session.query(Shift).filter(Shift.schedule_id == shift_id).one()
