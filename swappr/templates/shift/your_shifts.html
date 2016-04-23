@@ -9,16 +9,17 @@
 </div>
 <div class="row">
 <div id="your_shifts" class="col-md-12 shifts">
-{% for shift in upcoming_shifts %}
-      <p>Meow</p>
-    {% endfor %}
-  <svg>
-    
-  </svg>
-  <script>alert({{upcoming_shifts}})</script>
-  {% for shift in upcoming_shifts %}
-    <h1>Test {{shift}}</h1>
-  {% endfor %}
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-10">
+    <svg width="700" height="720">
+      <!-- height is shift length // 60, width is 100, x is day * 100, y is start time in hours -->
+      {% for shift in upcoming_shifts %}
+        <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) // 60}}" width="100"
+              x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}" y="{{shift['adjusted_start'] % 86400 / 3600}}"></rect>
+      {% endfor %}
+    </svg>
+  </div>
 </div>
 </div>
 
