@@ -31,6 +31,14 @@ def get_users():
 def get_schedules(ids, show_costs=False):
     return tanda_auth.get('schedules?ids={}&showCosts={}'.format(','.join(ids), show_costs))
 
-def get_managers_for_user_id(user_id):
-    all_departments = swappr.god_request.get('departments').json()
-    print(all_departments)
+def get_managers_for_department(department_id):
+    department = swappr.god_request.get('departments/' + str(department_id)).json()
+    manager_ids = department["managers"]
+    all_users = swappr.god_request.get('users').json()
+    managers = []
+    for i in range(len(all_users)):
+        user = all_users[i]
+        if user["id"] in manager_ids:
+            managers.append(user)
+    return managers
+
