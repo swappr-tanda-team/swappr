@@ -1,7 +1,7 @@
 """
 Endpoints for my shifts
 """
-from flask import Blueprint, render_template, url_for, redirect, session
+from flask import Blueprint, render_template, url_for, redirect, session, request
 from flask_oauthlib.client import OAuth
 from flask_login import login_required, current_user
 from swappr import login_manager, app
@@ -23,9 +23,15 @@ def user_shifts():
     """
     List the shifts that belong to the user
     """
-    upcoming_shifts = tanda_shift.fetch_current_user_upcoming_shifts()
+    delta = 0
+    if "delta" in request.args:
+        delta = int(request.args.get("delta"))
+        upcoming_shifts = tanda_shift.fetch_current_user_shifts_for_date(delta)
+    else:
+        upcoming_shifts = tanda_shift.fetch_current_user_upcoming_shifts()
+
     return render_template('shift/your_shifts.html', upcoming_shifts=upcoming_shifts, days=day_name,
-                           datetime=datetime, timedelta=timedelta)
+                           datetime=datetime, delta=delta, timedelta=timedelta)
 
 @shift.route('/offer/<int:id>', methods=['POST'])
 @login_required
