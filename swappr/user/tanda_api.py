@@ -1,6 +1,7 @@
 from flask_oauthlib.client import OAuth
 from flask import session
 from swappr import app
+import swappr.god_request
 
 oauth = OAuth(app)
 tanda_auth = oauth.remote_app(
@@ -13,7 +14,6 @@ tanda_auth = oauth.remote_app(
     app_key='TANDA'
 )
 
-
 @tanda_auth.tokengetter
 def get_token():
     if 'tanda_oauth' in session:
@@ -25,3 +25,7 @@ def get_token():
 
 def get_users():
     return tanda_auth.get('users').data
+
+def get_managers_for_user_id(user_id):
+    all_departments = swappr.god_request.get('departments').json()
+    print(all_departments)
