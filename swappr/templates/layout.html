@@ -13,41 +13,34 @@
     {% block css %}{% endblock %}
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div id="header" class="nav">
-        <ul class="nav navbar-nav">
-          <li>
-            <a href="{{ url_for('index') }}">Swappr</a>
-          </li>
-          <li>
-            <a href="{{ url_for('index') }}">Home</a> <!--{%if request.endpoint == "index"%} class="active" {%endif%}-->
-          </li>
-          <li>
-            <a href="{{ url_for('shift.user_shifts') }}">Your Shifts</a>
-          </li>
-          <li>
-            {% if current_user.is_authenticated %}
-              <a class="hollow button small" href="{{  url_for('user.account') }}">{{ current_user.name }}</a>
-            {% else %}
-              <a class="hollow button small" href="{{ url_for('user.login') }}">Login / Signup</a>
-            {% endif %}
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div class="container" style="margin-top: 50px;">
+    <div class="container">
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div id="header" class="nav">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="{{ url_for('index') }}">Swappr</a>
+            </li>
+            <li>
+              <a href="{{ url_for('index') }}">Home</a> <!--{%if request.endpoint == "index"%} class="active" {%endif%}-->
+            </li>
+            <li>
+              <a href="{{ url_for('shift.user_shifts') }}">Your Shifts</a>
+            </li>
+            <li>
+              {% if current_user.is_authenticated %}
+                <a class="hollow button small" href="{{  url_for('user.account') }}">{{ current_user.name }}</a>
+              {% else %}
+                <a class="hollow button small" href="{{ url_for('user.login') }}">Login / Signup</a>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container" style="margin-top: 70px;border: 1px black solid">
       {% block body %}
         #body content here
       {% endblock %}
-    </div>
-    <div id="footer" class="row">
-      <div class="column small-4">
-        <ul class="no-bullet float-center" style="width: 100px;">
-          <li class="footer-link-head">Swappr</li>
-          <li><a href="{{ url_for('index') }}" class="light-link">Home</a></li>
-          <li><a href="{{ url_for('user.login') }}" class="light-link">Login</a></li>
-        </ul>
-      </div>
     </div>
   </body>
 </html>

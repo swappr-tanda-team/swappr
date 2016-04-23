@@ -7,12 +7,18 @@
     <h3>Your Shifts</h3>
   </div>
 </div>
+<div class="row">
 <div id="your_shifts" class="col-md-12 shifts">
   <svg>
     {% for shift in upcoming_shifts %}
       <rect height="{{ shift.getEnd() - shift.getStart() }}" width="100" x="{{ shift.getStart() % 7 }}"></rect>
     {% endfor %}
   </svg>
+  <script>alert({{upcoming_shifts}})</script>
+  {% for shift in upcoming_shifts %}
+    <h1>Test {{shift}}</h1>
+  {% endfor %}
+</div>
 </div>
 
 {% endblock %}
