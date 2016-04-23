@@ -4,7 +4,6 @@ Methods for interacting with Tanda shifts
 from flask import session
 from flask_login import current_user
 from swappr.user.tanda_api import tanda_auth
-from swappr.user.tanda_api import get_managers_for_user_id
 
 
 def fetch_current_user_upcoming_shifts():
