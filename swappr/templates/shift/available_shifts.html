@@ -14,9 +14,9 @@
 <div class="table-responsive">
 <table id="shiftTable" class="shiftTable table table-bordered table-condensed">
     <tr>
-        {% if shifts|length > 0 %}
-            {% set diff = timedelta(datetime.utcfromtimestamp(shifts[0].adjusted_start).weekday()) %}
-            {% set start_week = datetime.utcfromtimestamp(shifts[0].adjusted_start) - diff %}
+        {% if available_shifts|length > 0 %}
+            {% set diff = timedelta(datetime.utcfromtimestamp(available_shifts[0].adjusted_start).weekday()) %}
+            {% set start_week = datetime.utcfromtimestamp(available_shifts[0].adjusted_start) - diff %}
             <td>{{start_week.date()}} to
             {{(start_week + timedelta(6)).date()}}</td>
         {% else %}
@@ -53,8 +53,8 @@
     {% endfor %}
 </table>
 </div>
-    <script>console.log("{{upcoming_shifts}}");</script>
-{% for shift in upcoming_shifts %}
+    <script>console.log("{{available_shifts}}");</script>
+{% for shift in available_shifts %}
     {% set start_time = datetime.utcfromtimestamp(shift.adjusted_start) %}
     {% set end_time = datetime.utcfromtimestamp(shift.adjusted_finish) %}
     <script>
@@ -68,7 +68,7 @@
                         {
                             text: "Yes",
                             click: function () {
-                                $.post("/shift/accept/" + "{{shift['id']}}" + "/" + "{{user.get_id()}}", {}, function (data, status) {
+                                $.post("/shift/accept/" + "{{shift.schedule_id}}" + "/" + "{{user.get_id()}}", {}, function (data, status) {
                                     alert("Response:" + data);
                                     console.log(status + ": " + data);
                                 });
