@@ -83,7 +83,7 @@ def fetch_offered_shifts():
 def take_offered_shift(shift_id, taker_id):
     shift = db_session.query(Shift).filter(Shift.schedule_id == shift_id).one()
     shift.taker = taker_id
-    shift.taker_name = get_user_by_id(taker_id).data['name']
+    shift.taker_name = get_user_by_id(taker_id)['name']
     db_session.commit()
 
 #this method can only be called by a manager!!!
