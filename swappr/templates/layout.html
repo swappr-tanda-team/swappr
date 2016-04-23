@@ -40,10 +40,15 @@
               <a href="{{ url_for('shift.user_shifts') }}">Your Shifts</a>
           </li>
           <li>
+              {% if current_user.is_manager %}
+                  <a href="{{ url_for('manage.manage_shifts') }}">Approve Shift Swaps</a>
+              {% endif %}
+          </li>
+          <li>
               {% if current_user.is_authenticated %}
-                  <a class="hollow button small" href="{{ url_for('user.account') }}">{{ current_user.name }}</a>
+                  <a href="{{ url_for('user.account') }}">{{ current_user.name }}</a>
               {% else %}
-                  <a class="hollow button small" href="{{ url_for('user.login') }}">Login / Signup</a>
+                  <a href="{{ url_for('user.login') }}">Login / Signup</a>
               {% endif %}
           </li>
       </ul>

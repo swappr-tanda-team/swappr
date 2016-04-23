@@ -9,10 +9,24 @@
         </div>
     </div>
 </div>
-<table>
+<table class="table table-bordered table-condensed">
+    <tr>
+        <td>Start Time</td>
+        <td>End Time</td>
+        <td>Employee swapping the shift</td>
+        <td>Employee taking the shift</td>
+        <td></td>
+    </tr>
 {% for shift in authed_shifts %}
     <tr>
-        <td>{{shift}}</td>
+        <td>{shift.start_time}</td>
+        <td>{shift.end_time}</td>
+        <td>{shift.employee_name}</td>
+        <td>{shift.taker_name}</td>
+        <td>
+            <button onclick="$.post('/manage/' + '{{shift.schedule_id}}' + '/True', {}, function(response) {});">Accept</button>
+            <button onclick="$.post('/manage/' + '{{shift.schedule_id}}' + '/False', {}, function(response) {});">Deny</button>
+        </td>
     </tr>
 {% endfor %}
 </table>

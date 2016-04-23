@@ -12,7 +12,6 @@ from .models import User
 @app.route('/')
 def index():
     return redirect(url_for("shift.user_shifts"))
-    return flask.render_template('home.html')
 
 
 @app.route('/addBob')

@@ -26,6 +26,10 @@ def get_users():
     return tanda_auth.get('users').data
 
 
+def get_user_by_id(user_id):
+    return swappr.god_request.get('user/' + str(user_id))
+
+
 def get_schedules(ids, show_costs=False):
     return tanda_auth.get('schedules?ids={}&showCosts={}'.format(','.join(ids), show_costs))
 
