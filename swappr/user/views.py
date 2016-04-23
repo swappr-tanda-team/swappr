@@ -73,8 +73,15 @@ def authorize():
     user_info = auth.get('users/me', token=(resp["access_token"],)).data
     u = db_session.query(User).filter(User.employee_id == user_info['id']).first()
     if not u:
-        print(user_info)
+        real_user_info = auth.get('users/' + str(user_info["id"]), token=(resp["access_token"],)).data
         u = User(user_info['name'], user_info['id'], user_info["utc_offset"], user_info["time_zone"])
+        manager_levels = ["organisation_admin", "payroll_officer", "roster_manager"]
+        is_manager = False
+        for i in range(len(real_user_info["user_levels"])):
+            if (real_user_info["user_levels"][i] in manager_levels):
+                is_manager = True
+                break
+        u.is_manager = is_manager
         db_session.add(u)
         db_session.commit()
     login_user(u, remember=True)
