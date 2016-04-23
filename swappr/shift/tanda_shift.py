@@ -63,20 +63,21 @@ def fetch_vacant_shifts():
 
 def offer_this_shift(id):
     shift = tanda_auth.get('schedules/' + str(id)).data
-    name = get_user_by_id(id)['name']
+    name = get_user_by_id(shift["user_id"])['name']
+    print(shift)
     shift_offer = Shift(shift["id"], None, shift["user_id"], shift["start"], shift["finish"], None,
                         shift["department_id"], name, None)
     db_session.add(shift_offer)
     db_session.commit()
 
 def fetch_offered_shifts():
-    shifts = db_session.query(Shift).filter(Shift.taker is None)
+    shifts = db_session.query(Shift)
     actual_shifts = [shift for shift in shifts]
     print("Shift is:")
     print(actual_shifts)
     for shift in actual_shifts:
-        shift["adjusted_start"] = shift["start"] + current_user.utc_offset
-        shift["adjusted_finish"] = shift["finish"] + current_user.utc_offset
+        shift.adjusted_start = shift.start_time + current_user.utc_offset
+        shift.adjusted_finish = shift.end_time + current_user.utc_offset
     return actual_shifts
 
 def take_offered_shift(shift_id, taker_id):
