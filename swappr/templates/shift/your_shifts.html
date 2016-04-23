@@ -36,7 +36,7 @@
             table.rows[i].cells["{{start_time.isoweekday()}}"].setAttribute("style", "background-color:green");
             table.rows[i].cells["{{start_time.isoweekday()}}"].onclick = function() {
                 console.log("Accepting...");
-                $("#accept").attr("onclick", function() {
+                $("#accept").click(function() {
                     $.post("/shift/offer/" + "{{shift['id']}}", {}, function(response) {console.log("Successful:" + response)});
                 });
                 //$("#dialog").dialog()
@@ -56,7 +56,7 @@
     </div>
     <div class="row">
         <button id="decline">No</button>
-        <script>$("#decline").attr("onclick", function() {$("#decline").attr("style", "visibility:hidden")})</script>
+        <script>$("#decline").click(function() {$("#dialog").attr("style", "visibility:hidden");})</script>
         <button id="accept">Yes</button>
     </div>
 </div>
