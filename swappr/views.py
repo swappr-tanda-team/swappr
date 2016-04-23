@@ -12,10 +12,6 @@ from .models import User
 def index():
     return flask.render_template('home.html')
 
-@app.route('/your_shifts')
-def your_shifts():
-    return flask.render_template('your_shifts.html')
-
 
 @app.route('/addBob')
 def test_db_with_bob():
