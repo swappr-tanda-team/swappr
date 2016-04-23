@@ -2,6 +2,7 @@ from flask_oauthlib.client import OAuth
 from flask import session
 from swappr import app
 import swappr.god_request
+import os
 
 oauth = OAuth(app)
 tanda_auth = oauth.remote_app(
@@ -13,7 +14,6 @@ tanda_auth = oauth.remote_app(
     authorize_url='https://my.tanda.co/api/oauth/authorize',
     app_key='TANDA'
 )
-
 
 @tanda_auth.tokengetter
 def get_token():
