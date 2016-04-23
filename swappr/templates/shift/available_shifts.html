@@ -68,7 +68,7 @@
                         {
                             text: "Yes",
                             click: function () {
-                                $.post("/shift/accept/" + "{{shift['id']}}" + "/" + "{{user.get_id()}}", {}, function (data, status) {
+                                $.post("/shift/accept/" + "{{shift.schedule_id}}" + "/" + "{{user.get_id()}}", {}, function (data, status) {
                                     alert("Response:" + data);
                                     console.log(status + ": " + data);
                                 });
