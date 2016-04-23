@@ -25,3 +25,9 @@ def user_shifts():
     upcoming_shifts = tanda_shift.fetch_current_user_upcoming_shifts()
     return render_template('shift/your_shifts.html', upcoming_shifts=upcoming_shifts, days=day_name,
                            datetime=datetime)
+
+@shift.route('/offer/<int:id>', methods=['POST'])
+@login_required
+def offer(id):
+    tanda_shift.offer_this_shift(id)
+    return "Added shift " + str(id)
