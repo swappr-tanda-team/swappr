@@ -7,6 +7,7 @@ __all__ = ["Shift"]
 class Shift(Base):
     schedule_id = sa.Column(sa.Integer, primary_key=True)
     employee_id = sa.Column(sa.Integer)
+    employee_name = sa.Column(sa.Text)
     start_time = sa.Column(sa.Integer)
     end_time = sa.Column(sa.Integer)
     # status = sa.Column(sa.TEXT)
@@ -17,8 +18,10 @@ class Shift(Base):
     department_id = sa.Column(sa.Integer)
     # employee id of taker
     taker = sa.Column(sa.Integer)
+    taker_name = sa.Column(sa.Text)
 
-    def __init__(self, schedule_id, taker=None, employee_id=None, start_time=None, end_time=None, location=None, department_id=None):
+    def __init__(self, schedule_id, taker=None, employee_id=None, start_time=None, end_time=None, location=None,
+                 department_id=None, employee_name=None, taker_name=None):
         self.id = schedule_id
         self.employee_id = employee_id
         self.start_time = start_time
@@ -26,6 +29,8 @@ class Shift(Base):
         self.location = location
         self.department_id = department_id
         self.taker = taker
+        self.employee_name = employee_name
+        self.taker_name = taker_name
 
     def __repr__(self):
         return '<Shift %d>' % self.id
@@ -55,5 +60,3 @@ class Shift(Base):
 
     def is_taken(self):
         return self.taken
-
-

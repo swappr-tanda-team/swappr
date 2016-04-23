@@ -12,6 +12,7 @@ from . import tanda_shift
 import pprint
 from calendar import day_name
 from datetime import datetime
+from datetime import timedelta
 
 shift = Blueprint('shift', __name__, url_prefix='/shift')
 
@@ -30,7 +31,7 @@ def user_shifts():
         upcoming_shifts = tanda_shift.fetch_current_user_upcoming_shifts()
 
     return render_template('shift/your_shifts.html', upcoming_shifts=upcoming_shifts, days=day_name,
-                           datetime=datetime, delta=delta)
+                           datetime=datetime, delta=delta, timedelta=timedelta)
 
 @shift.route('/offer/<int:id>', methods=['POST'])
 @login_required
@@ -47,4 +48,4 @@ def available_shifts():
     shifts = tanda_shift.fetch_offered_shifts()
     shifts.extend(tanda_shift.fetch_vacant_shifts())
     return render_template('shift/available_shifts.html', available_shifts=shifts, days=day_name,
-                           datetime=datetime)
+                           datetime=datetime, timedelta=timedelta)
