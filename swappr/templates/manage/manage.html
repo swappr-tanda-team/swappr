@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="panel-heading">
+    <div class="row">
+        <div id="info" class="col-md-12">
+            <h4>Shifts for Approval</h4>
+        </div>
+    </div>
+</div>
+<table>
+{% for shift in authed_shifts %}
+    <tr>
+        <td>{{shift}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}

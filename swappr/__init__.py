@@ -19,8 +19,9 @@ from .models import *
 
 from .user import user as user_bp
 from .shift import shift as shift_bp
+from .manage import manage as manage_bp
 
-BLUEPRINTS = [user_bp, shift_bp]
+BLUEPRINTS = [user_bp, shift_bp, manage_bp]
 
 for blueprint in BLUEPRINTS:
     app.register_blueprint(blueprint)
