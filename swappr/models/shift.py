@@ -5,7 +5,7 @@ __all__ = ["Shift"]
 
 
 class Shift(Base):
-    id = sa.Column(sa.Integer, primary_key=True)
+    schedule_id = sa.Column(sa.Integer, primary_key=True)
     employee_id = sa.Column(sa.Integer)
     start_time = sa.Column(sa.Integer)
     end_time = sa.Column(sa.Integer)
@@ -14,21 +14,22 @@ class Shift(Base):
     # tag = sa.Column(sa.TEXT)
     # break_start = sa.Column(sa.Integer)
     # break_end = sa.Column(sa.Integer)
-    #dept id
+    department_id = sa.Column(sa.Integer)
 
-    def __init__(self, id, employee_id=None, start_time=None, end_time=None, location=None):
-        self.id = id
+    def __init__(self, schedule_id, employee_id=None, start_time=None, end_time=None, location=None, department_id=None):
+        self.id = schedule_id
         self.employee_id = employee_id
         self.start_time = start_time
         self.end_time = end_time
         self.location = location
+        self.department_id = department_id
 
     def __repr__(self):
         return '<Shift %d>' % self.id
 
 
 
-    def get_id(self):
+    def get_schedule_id(self):
         """Return the email address to satisfy Flask-Login's requirements."""
         return self.id
 
