@@ -47,4 +47,7 @@ class Shift(Base):
     def get_employee_id(self):
         return self.employee_id
 
+    def get_department_id(self):
+        return self.department_id
+
 
