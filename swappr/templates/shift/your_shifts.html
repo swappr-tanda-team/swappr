@@ -9,16 +9,30 @@
 </div>
 <div class="row">
 <div id="your_shifts" class="col-md-12 shifts">
+  {% set scaling = 20 %}
   <div class="col-md-2">
+    <ul style="list-style-type: none">
+      {% for i in range(0, 24) %}
+        <li style="height=20px">{{i}}:00</li>
+      {% endfor %}
+    </ul>
   </div>
   <div class="col-md-10">
-    <svg width="700" height="720">
-      <!-- height is shift length // 60, width is 100, x is day * 100, y is start time in hours -->
+    <svg width="700" height="{{24 * scaling}}">
+      {% for day in range(0, 8) %}
+        <line x1="{{100*day}}" y1="0" x2="{{100*day}}" y2="{{24*scaling}}" stroke="#000000"></line>
+      {% endfor %}
+      {% for hour in range(0, 25) %}
+        <line x1="{{0}}" y1="{{hour*scaling}}" x2="700" y2="{{hour*scaling}}" stroke="#000000"></line>
+      {% endfor %}
+      <!-- height is shift length in hours * scaling, width is 100, x is day * 100, y is start time in hours * scaling -->
       {% for shift in upcoming_shifts %}
-        <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) // 60}}" width="100"
-              x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}" y="{{shift['adjusted_start'] % 86400 / 3600}}"></rect>
+        <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) / 3600 * scaling}}" width="100"
+              x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}"
+              y="{{shift['adjusted_start'] % 86400 / 3600 * scaling}}"></rect>
       {% endfor %}
     </svg>
+    <h3>{{upcoming_shifts[0]['adjusted_start'] % 86400 / 3600}}</h3>
   </div>
 </div>
 </div>
