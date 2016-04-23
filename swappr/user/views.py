@@ -2,32 +2,14 @@
 Views for the User model.
 """
 from flask import Blueprint, render_template, url_for, redirect, session
-from flask_oauthlib.client import OAuth
 from flask_login import login_required, login_user, logout_user
 from swappr import login_manager, app
 from swappr.database import db_session
 from swappr.models import User
-import pprint
+from . import tanda_api
 
 user = Blueprint('user', __name__, url_prefix='/user')
-
-oauth = OAuth(app)
-tanda_auth = oauth.remote_app(
-    'tanda',
-    base_url='https://my.tanda.co/api/v2/',
-    request_token_url=None,
-    request_token_params={'scope': 'me roster timesheet user cost'},
-    access_token_url='https://my.tanda.co/api/oauth/token',
-    authorize_url='https://my.tanda.co/api/oauth/authorize',
-    app_key='TANDA'
-)
-
-
-@tanda_auth.tokengetter
-def get_token():
-    if 'tanda_oauth' in session:
-        resp = session['tanda_oauth']
-        return resp['access_token'], None
+auth = tanda_api.tanda_auth
 
 
 @login_manager.user_loader
@@ -42,7 +24,7 @@ def account():
     """
     View list of submissions for a given user and their total points
     """
-    get_users()
+    tanda_api.get_users()
     return render_template('user/account.html')
 
 
@@ -65,7 +47,7 @@ def login():
         callback_url = url_for('user.authorize', _external=True)
     else:
         callback_url = 'TODO: put in the URL'
-    return tanda_auth.authorize(callback=callback_url)
+    return auth.authorize(callback=callback_url)
 
 @user.route("/logout")
 @login_required
@@ -83,11 +65,11 @@ def authorize():
     """
     Use information from tanda oauth log in to either create a new user or log in as an existing user.
     """
-    resp = tanda_auth.authorized_response()
+    resp = auth.authorized_response()
     if resp is None:
         return redirect(url_for('index'))
     session['tanda_oauth'] = resp
-    user_info = tanda_auth.get('users/me', token=(resp["access_token"],)).data
+    user_info = auth.get('users/me', token=(resp["access_token"],)).data
     u = db_session.query(User).filter(User.employee_id == user_info['id']).first()
     if not u:
         u = User(user_info['name'], user_info['id'])
@@ -96,8 +78,3 @@ def authorize():
     login_user(u, remember=True)
     return redirect(url_for('index'))
 
-
-# Example API Call
-def get_users():
-    users = tanda_auth.get('users').data
-    pprint.pprint(users)
