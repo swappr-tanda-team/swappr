@@ -84,10 +84,11 @@ def authorize():
         u = User(user_info['name'], user_info['id'], user_info["utc_offset"], user_info["time_zone"])
         manager_levels = ["organisation_admin", "payroll_officer", "roster_manager"]
         is_manager = False
-        for i in range(len(real_user_info["user_levels"])):
-            if (real_user_info["user_levels"][i] in manager_levels):
-                is_manager = True
-                break
+        if ("user_levels" in real_user_info):        
+            for i in range(len(real_user_info["user_levels"])):
+                if (real_user_info["user_levels"][i] in manager_levels):
+                    is_manager = True
+                    break
         u.is_manager = is_manager
         db_session.add(u)
         db_session.commit()
