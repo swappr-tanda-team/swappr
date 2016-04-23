@@ -39,6 +39,9 @@
         table = document.getElementById("shiftTable");
         for (i = parseInt("{{start_time.hour}}"); i < parseInt("{{end_time.hour}}"); i++) {
             table.rows[i].cells["{{start_time.isoweekday()}}"].setAttribute("style", "background-color:green");
+            table.rows[i].cells["{{start_time.isoweekday()}}"].onclick = function() {
+                $.post("/shift/offer/" + "{{shift['id']}}", {}, function(response) {console.log("Successful:" + response)});
+            }
         }
     </script>
 {% endfor %}
