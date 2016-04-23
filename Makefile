@@ -7,7 +7,7 @@ PRODUCTION_CONTAINER_NAME=swappr_deployed
 
 run:
 	docker run $(DOCKER_NODE_STD_ARGS) $(DOCKER_NODE_IMAGE) python runserver.py
-	
+
 build:
 	docker build -t swappr-env:latest .
 

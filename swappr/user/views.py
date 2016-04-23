@@ -8,6 +8,7 @@ from swappr import login_manager, app
 from swappr.database import db_session
 from swappr.models import User
 from . import tanda_api
+import os
 
 user = Blueprint('user', __name__, url_prefix='/user')
 auth = tanda_api.tanda_auth
@@ -49,8 +50,9 @@ def login():
     Redirects to tanda oauth which redirects to /authorize
     """
     callback_url = url_for('user.authorize', _external=True)
+    if ('REDIRECT_URI' in os.environ):
+        callback_url=os.environ['REDIRECT_URI']
     return auth.authorize(callback=callback_url)
-
 
 @user.route("/logout")
 @login_required
