@@ -9,7 +9,6 @@ app.config['TANDA'] = {
     'consumer_secret': os.environ['SWAPPR_TANDA_API_SECRET'],
 }
 app.config['SECRET_KEY'] = os.environ['SWAPPR_SECRET_KEY']
-app.testing = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
