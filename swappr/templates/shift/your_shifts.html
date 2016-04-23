@@ -3,23 +3,57 @@
 {% endblock %}
 {% block body %}
 <div class="row">
-  <div id="info" class="col-md-12">
-    <h3>Your Shifts</h3>
-  </div>
+    <div id="info" class="col-md-12">
+        <h3>Your Shifts</h3>
+    </div>
 </div>
-<div class="row">
+<table class="shiftTable">
+    <tr>
+        <td colspan="2" class="borderedCell">
+            Something 1
+            <p>Something 2</p>
+        </td>
+        <td>
+            Something 5
+            <p>Something 6</p>
+        </td>
+        <td class="borderedCell">
+            Something 7
+            <p>Something 8</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Something 1
+            <p>Something 2</p>
+        </td>
+        <td class="borderedCell">
+            Something 3
+            <p>Something 4</p>
+        </td>
+        <td>
+            Something 5
+            <p>Something 6</p>
+        </td>
+        <td>
+            Something 7
+            <p>Something 8</p>
+        </td>
+    </tr>
+</table>
 <div id="your_shifts" class="col-md-12 shifts">
-  <div class="col-md-2">
-  </div>
-  <div class="col-md-10">
-    <svg width="700" height="720">
-      <!-- height is shift length // 60, width is 100, x is day * 100, y is start time in hours -->
-      {% for shift in upcoming_shifts %}
-        <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) // 60}}" width="100"
-              x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}" y="{{shift['adjusted_start'] % 86400 / 3600}}"></rect>
-      {% endfor %}
-    </svg>
-  </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-10">
+        <svg width="700" height="720">
+            <!-- height is shift length // 60, width is 100, x is day * 100, y is start time in hours -->
+            {% for shift in upcoming_shifts %}
+            <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) // 60}}" width="100"
+                  x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}"
+                  y="{{shift['adjusted_start'] % 86400 / 3600}}"></rect>
+            {% endfor %}
+        </svg>
+    </div>
 </div>
 </div>
 

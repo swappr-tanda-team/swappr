@@ -19,9 +19,15 @@ def get_token():
     if 'tanda_oauth' in session:
         resp = session['tanda_oauth']
         return resp['access_token'], None
+    else:
+        return None, None
 
 
 # IMPLEMENT API METHODS BELOW HERE
 
 def get_users():
     return tanda_auth.get('users').data
+
+
+def get_schedules(ids, show_costs=False):
+    return tanda_auth.get('schedules?ids={}&showCosts={}'.format(','.join(ids), show_costs))

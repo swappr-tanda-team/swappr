@@ -1,0 +1,15 @@
+body {
+  margin: 100px;
+}
+
+table.shiftTable td {
+    padding: 20px;
+}
+
+.borderedCell {
+  background-color: #3AA039;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+}
