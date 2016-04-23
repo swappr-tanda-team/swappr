@@ -6,7 +6,7 @@ __all__ = ["Shift"]
 
 class Shift(Base):
     id = sa.Column(sa.Integer, primary_key=True)
-    # employee_id = sa.Column(sa.Integer)
+    employee_id = sa.Column(sa.Integer)
     start_time = sa.Column(sa.Integer)
     end_time = sa.Column(sa.Integer)
     # status = sa.Column(sa.TEXT)
@@ -14,12 +14,14 @@ class Shift(Base):
     # tag = sa.Column(sa.TEXT)
     # break_start = sa.Column(sa.Integer)
     # break_end = sa.Column(sa.Integer)
+    #dept id
 
-    def __init__(self, id=None, employee_id=None, start_time=None, end_time=None):
+    def __init__(self, id, employee_id=None, start_time=None, end_time=None, location=None):
         self.id = id
         self.employee_id = employee_id
         self.start_time = start_time
         self.end_time = end_time
+        self.location = location
 
     def __repr__(self):
         return '<Shift %d>' % self.id
@@ -40,5 +42,8 @@ class Shift(Base):
 
     def get_location(self):
         return self.location
+
+    def get_employee_id(self):
+        return self.employee_id
 
 
