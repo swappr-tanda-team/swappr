@@ -27,3 +27,4 @@ for blueprint in BLUEPRINTS:
     app.register_blueprint(blueprint)
 
 from . import views
+
