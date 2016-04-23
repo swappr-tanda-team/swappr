@@ -51,6 +51,8 @@ def offer_this_shift(id):
 
 def fetch_offered_shifts():
     shifts = db_session.query(Shift).filter(Shift.taker is None)
+    shifts["adjusted_start"] = shifts["start"] + current_user.utc_offset
+    shifts["adjusted_finish"] = shifts["finish"] + current_user.utc_offset
     return shifts
 
 def take_offered_shift(shift_id, taker_id):
