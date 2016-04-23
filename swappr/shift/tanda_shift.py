@@ -6,6 +6,8 @@ from flask_login import current_user
 from swappr.user.tanda_api import tanda_auth
 from swappr.database import db_session
 from swappr.models import Shift
+import swappr.god_request
+import json
 
 #Might be benificial to cache roster?
 
@@ -51,3 +53,24 @@ def fetch_offered_shifts():
     shifts = db_session.query(Shift)
     return shifts
 
+
+#this method can only be called by a manager!!!
+def replace_user_in_schedule(user_id, schedule_id):
+    print(current_user.is_manager)
+    result = None
+    url_path = 'schedules/' + str(schedule_id)
+    data = {
+        'user_id': user_id
+    }
+    json_data = json.dumps(data)
+    print(json_data)
+    if (current_user.is_manager):
+        #clear to proceed as current user - probably
+        result = tanda_auth.put(url_path, data=data).data
+    else:
+        #switch to god mode
+        result = swappr.god_request.put(url_path, data=data).json()
+    print(result)
+    if ("error" in result):
+        return False
+    return result["user_id"] == user_id

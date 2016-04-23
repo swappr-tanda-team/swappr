@@ -10,12 +10,14 @@ class User(Base):
     utc_offset = sa.Column(sa.Integer)
     time_zone = sa.Column(sa.Text)
     employee_id = sa.Column(sa.Integer)
+    is_manager = sa.Column(sa.Boolean)
 
     def __init__(self, name=None, employee_id=None, utc_offset=None, time_zone=None):
         self.name = name
         self.employee_id = employee_id
         self.utc_offset = utc_offset
         self.time_zone = time_zone
+        self.is_manager = False
 
     def __repr__(self):
         return '<User %r>' % self.name
