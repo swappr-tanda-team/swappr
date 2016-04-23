@@ -27,7 +27,7 @@ def get_users():
 
 
 def get_user_by_id(user_id):
-    return swappr.god_request.get('user/' + str(user_id))
+    return swappr.god_request.get('users/' + str(user_id)).json()
 
 
 def get_schedules(ids, show_costs=False):

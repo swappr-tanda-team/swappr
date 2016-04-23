@@ -45,7 +45,7 @@ def fetch_vacant_shifts():
 
 def offer_this_shift(id):
     shift = tanda_auth.get('schedules/' + str(id)).data
-    name = get_user_by_id(id)['name']
+    name = get_user_by_id(shift["user_id"])['name']
     shift_offer = Shift(shift["id"], None, shift["user_id"], shift["start"], shift["finish"], None,
                         shift["department_id"], name, None)
     db_session.add(shift_offer)
