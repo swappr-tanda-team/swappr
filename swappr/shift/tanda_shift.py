@@ -3,7 +3,7 @@ Methods for interacting with Tanda shifts
 """
 from flask import session
 from flask_login import current_user
-from swappr.user.tanda_api import tanda_auth
+from swappr.user.tanda_api import tanda_auth, get_user_by_id
 from swappr.database import db_session
 from swappr.models import Shift
 import swappr.god_request
@@ -45,7 +45,9 @@ def fetch_vacant_shifts():
 
 def offer_this_shift(id):
     shift = tanda_auth.get('schedules/' + str(id)).data
-    shift_offer = Shift(shift["id"], None, shift["user_id"], shift["start"], shift["finish"], None, shift["department_id"])
+    name = get_user_by_id(id)['name']
+    shift_offer = Shift(shift["id"], None, shift["user_id"], shift["start"], shift["finish"], None,
+                        shift["department_id"], name, None)
     db_session.add(shift_offer)
     db_session.commit()
 
@@ -56,6 +58,7 @@ def fetch_offered_shifts():
 def take_offered_shift(shift_id, taker_id):
     shift = db_session.query(Shift).filter(Shift.schedule_id == shift_id).one()
     shift.taker = taker_id
+    shift.taker_name = get_user_by_id(taker_id)['name']
     db_session.commit()
 
 #this method can only be called by a manager!!!
