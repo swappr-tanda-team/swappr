@@ -9,6 +9,8 @@ from swappr.user.tanda_api import tanda_auth
 def fetch_current_user_upcoming_shifts():
     shift_info = tanda_auth.get('rosters/current').data
     valid_shifts = []
+    if not shift_info:  # Make sure we don't access an empty dictionary
+        return valid_shifts
     for i in range(len(shift_info["schedules"])):
         #at this point, we examining all the schedules for a particular day
         for j in range(len(shift_info["schedules"][i]["schedules"])):
