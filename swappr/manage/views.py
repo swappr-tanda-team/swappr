@@ -25,6 +25,7 @@ def manage_shifts():
         dept_ids.append(shift.department_id)
     authed_dept_ids = []
     for dept_id in dept_ids:
+        print(dept_id)
         managers = tanda_api.get_managers_for_department(dept_id)
         for manager in managers:
             if manager['id'] == current_user.employee_id:
