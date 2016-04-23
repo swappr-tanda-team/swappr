@@ -39,5 +39,6 @@ def available_shifts():
     List the shifts that are available to be taken
     """
     shifts = tanda_shift.fetch_offered_shifts()
+    shifts.extend(tanda_shift.fetch_vacant_shifts())
     return render_template('shift/available_shifts.html', available_shifts=shifts, days=day_name,
                            datetime=datetime)
