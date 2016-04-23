@@ -16,8 +16,10 @@ auth = tanda_api.tanda_auth
 
 @login_manager.user_loader
 def user_loader(user_id):
-    return db_session.query(User).filter(User.id == user_id).one()
-
+    try:
+        return db_session.query(User).filter(User.id == user_id).one()
+    except:
+        session.clear()
 
 @user.route('/')
 def index():
