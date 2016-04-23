@@ -15,16 +15,17 @@ class Shift(Base):
     # break_start = sa.Column(sa.Integer)
     # break_end = sa.Column(sa.Integer)
     department_id = sa.Column(sa.Integer)
-    taken = sa.Column(sa.Boolean)
+    # employee id of taker
+    taker = sa.Column(sa.Integer)
 
-    def __init__(self, schedule_id, taken, employee_id=None, start_time=None, end_time=None, location=None, department_id=None):
+    def __init__(self, schedule_id, taker=None, employee_id=None, start_time=None, end_time=None, location=None, department_id=None):
         self.id = schedule_id
         self.employee_id = employee_id
         self.start_time = start_time
         self.end_time = end_time
         self.location = location
         self.department_id = department_id
-        self.taken = taken
+        self.taker = taker
 
     def __repr__(self):
         return '<Shift %d>' % self.id
