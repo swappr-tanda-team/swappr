@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="row">
+  <div id="info" class="col-md-12">
+    <h3>Your Shifts</h3>
+  </div>
+</div>
+<div id="your_shifts" class="col-md-12 shifts">
+  <svg>
+    {% for shift in upcoming_shifts %}
+      <rect height="{{ shift.getEnd() - shift.getStart() }}" width="100" x="{{ shift.getStart() % 7 }}"></rect>
+    {% endfor %}
+  </svg>
+</div>
+
+{% endblock %}
