@@ -36,75 +36,12 @@
     {% set start_time = datetime.utcfromtimestamp(shift['adjusted_start']) %}
     {% set end_time = datetime.utcfromtimestamp(shift['adjusted_finish']) %}
     <script>
-        console.log("test");
-        console.log("{{start_time.isoweekday()}}");
         table = document.getElementById("shiftTable");
-        table.rows["{{start_time.isoweekday()}}"].cells["{{start_time.hour}}"].setAttribute("backgroundcolor", "green");
+        for (i = parseInt("{{start_time.hour}}"); i < parseInt("{{end_time.hour}}"); i++) {
+            table.rows[i].cells["{{start_time.isoweekday()}}"].setAttribute("style", "background-color:green");
+        }
     </script>
 {% endfor %}
-<!--
-<table class="shiftTable">
-    <tr>
-        <td colspan="2" class="borderedCell">
-            Something 1
-            <p>Something 2</p>
-        </td>
-        <td>
-            Something 5
-            <p>Something 6</p>
-        </td>
-        <td class="borderedCell">
-            Something 7
-            <p>Something 8</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Something 1
-            <p>Something 2</p>
-        </td>
-        <td class="borderedCell">
-            Something 3
-            <p>Something 4</p>
-        </td>
-        <td>
-            Something 5
-            <p>Something 6</p>
-        </td>
-        <td>
-            Something 7
-            <p>Something 8</p>
-        </td>
-    </tr>
-</table>
-<div id="your_shifts" class="col-md-12 shifts">
-  {% set scaling = 20 %}
-  <div class="col-md-2">
-    <ul style="list-style-type: none">
-      {% for i in range(0, 24) %}
-        <li style="height=20px">{{i}}:00</li>
-      {% endfor %}
-    </ul>
-  </div>
-  <div class="col-md-10">
-    <svg width="700" height="{{24 * scaling}}">
-      {% for day in range(0, 8) %}
-        <line x1="{{100*day}}" y1="0" x2="{{100*day}}" y2="{{24*scaling}}" stroke="#000000"></line>
-      {% endfor %}
-      {% for hour in range(0, 25) %}
-        <line x1="{{0}}" y1="{{hour*scaling}}" x2="700" y2="{{hour*scaling}}" stroke="#000000"></line>
-      {% endfor %}
-      -->
-      <!-- height is shift length in hours * scaling, width is 100, x is day * 100, y is start time in hours * scaling -->
-<!--
-      {% for shift in upcoming_shifts %}
-        <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) / 3600 * scaling}}" width="100"
-              x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}"
-              y="{{shift['adjusted_start'] % 86400 / 3600 * scaling}}"></rect>
-      {% endfor %}
-    </svg>
-  </div>
-  -->
 </div>
 </div>
 </div>
