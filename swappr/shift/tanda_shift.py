@@ -45,9 +45,9 @@ def fetch_vacant_shifts():
 
 def offer_this_shift(id):
     shift = tanda_auth.get('schedules/' + str(id)).data
-    name = get_user_by_id(id)['name']
+    # name = get_user_by_id(id).data['name']
     shift_offer = Shift(shift["id"], None, shift["user_id"], shift["start"], shift["finish"], None,
-                        shift["department_id"], name, None)
+                        shift["department_id"], None, None)
     db_session.add(shift_offer)
     db_session.commit()
 
@@ -64,7 +64,7 @@ def fetch_offered_shifts():
 def take_offered_shift(shift_id, taker_id):
     shift = db_session.query(Shift).filter(Shift.schedule_id == shift_id).one()
     shift.taker = taker_id
-    shift.taker_name = get_user_by_id(taker_id)['name']
+    shift.taker_name = get_user_by_id(taker_id).data['name']
     db_session.commit()
 
 #this method can only be called by a manager!!!

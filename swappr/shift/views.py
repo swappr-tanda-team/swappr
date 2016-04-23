@@ -42,4 +42,10 @@ def available_shifts():
     shifts = tanda_shift.fetch_offered_shifts()
     shifts.extend(tanda_shift.fetch_vacant_shifts())
     return render_template('shift/available_shifts.html', available_shifts=shifts, days=day_name,
-                           datetime=datetime, timedelta=timedelta)
+                           datetime=datetime, timedelta=timedelta, user=current_user)
+
+@shift.route('accept/<int:id>/<int:user_id>', methods=['POST'])
+@login_required
+def accept(id, user_id):
+    tanda_shift.take_offered_shift(id, user_id)
+    return "Shift " + str(id) + " accepted by " + str(user_id)

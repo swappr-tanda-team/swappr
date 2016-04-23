@@ -51,21 +51,6 @@
             {% endfor %}
         </tr>
     {% endfor %}
-    <!--
-    {% for i in range(-1, 24) %}
-        <tr>
-            {% for j in range(-1, 7) %}
-                {% if j == -1 and i >= 0 %}
-                    <td>{{i}}:00</td>
-                {% elif i == -1 and j > -1 %}
-                    <td>{{days[j]}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-    {% endfor %}
-    -->
 </table>
 </div>
     <script>console.log("{{upcoming_shifts}}");</script>
@@ -78,11 +63,21 @@
             table.rows[i].cells["{{start_time.isoweekday()}}"].setAttribute("style", "background-color:green");
             table.rows[i].cells["{{start_time.isoweekday()}}"].onclick = function() {
                 console.log("Accepting...");
-                $("#accept").click(function() {
-                    $.post("/shift/offer/" + "{{shift['id']}}", {}, function(response) {console.log("Successful:" + response)});
+                $("#dialog").dialog({
+                    buttons: [
+                        {
+                            text: "Yes",
+                            click: function () {
+                                $.post("/shift/accept/" + "{{shift['id']}}" + "/" + "{{user.get_id()}}", {}, function (data, status) {
+                                    alert("Response:" + data);
+                                    console.log(status + ": " + data);
+                                });
+                                $("#dialog").dialog("close");
+                            }
+                        }
+                    ]
                 });
-                //$("#dialog").dialog()
-                $("#dialog").attr("style", "visibility: visible");
+                $("#dialog").dialog("open");
             }
         }
     </script>
@@ -92,15 +87,8 @@
 </div>
 <script>
 </script>
-<div id="dialog" style="visibility: hidden">
-    <div class="row">
-    <p>Would you like to accept this shift?</p>
-    </div>
-    <div class="row">
-        <button id="decline">No</button>
-        <script>$("#decline").click(function() {$("#dialog").attr("style", "visibility:hidden");})</script>
-        <button id="accept">Yes</button>
-    </div>
+<div id="dialog" title="Add Shift">
+    Would you like to accept this shift?
 </div>
 
 {% endblock %}
