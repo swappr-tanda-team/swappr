@@ -8,9 +8,9 @@
       <h1>Welcome {{ current_user.name }}</h1>
     </div>
   </div>
-  <div class="row">
+  <div>
     <div class="column small-12 medium-6 medium-offset-3"
-         style="background-color: #e3e3e3">
+         style="background-color: #e3e3e3;padding-bottom: 20px;">
       <ul class="no-bullet text-center" style="padding-top: 30px;">
         <li><a href="{{ url_for('user.logout') }}" class="button account-btn">Logout</a>
         </li>
