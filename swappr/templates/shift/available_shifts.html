@@ -60,9 +60,10 @@
     {% set end_time = datetime.utcfromtimestamp(shift.adjusted_finish) %}
     <script>
         table = document.getElementById("shiftTable");
+        console.log("start is " + "{{start_time.hour}}" + " end is " + "{{end_time.hour}}" + " on " + "{{start_time.isoweekday()}}");
         for (i = parseInt("{{start_time.hour}}"); i < parseInt("{{end_time.hour}}"); i++) {
-            table.rows[i].cells["{{start_time.isoweekday()}}"].setAttribute("style", "background-color:green");
-            table.rows[i].cells["{{start_time.isoweekday()}}"].onclick = function() {
+            table.rows[parseInt("{{loop.index}}")+1].cells[parseInt("{{start_time.isoweekday()}}")*24 + i].setAttribute("style", "background-color:green");
+            table.rows[parseInt("{{loop.index}}")+1].cells[parseInt("{{start_time.isoweekday()}}")*24 + i].onclick = function() {
                 console.log("Accepting...");
                 $("#dialog").dialog({
                     buttons: [
