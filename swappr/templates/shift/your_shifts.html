@@ -8,7 +8,7 @@
     </div>
 </div>
 <div id="your_shifts" class="col-md-12">
-<table class="shiftTable" border="1">
+<table id="shiftTable" class="shiftTable" border="1">
     {% for i in range(-1, 24) %}
         <tr>
             {% for j in range(-1, 7) %}
@@ -23,6 +23,17 @@
         </tr>
     {% endfor %}
 </table>
+    <script>console.log("{{upcoming_shifts}}");</script>
+{% for shift in upcoming_shifts %}
+    {% set start_time = datetime.utcfromtimestamp(shift['adjusted_start']) %}
+    {% set end_time = datetime.utcfromtimestamp(shift['adjusted_finish']) %}
+    <script>
+        console.log("test");
+        console.log("{{start_time.isoweekday()}}");
+        table = document.getElementById("shiftTable");
+        table.rows["{{start_time.isoweekday()}}"].cells["{{start_time.hour}}"].setAttribute("backgroundcolor", "green");
+    </script>
+{% endfor %}
 <!--
 <table class="shiftTable">
     <tr>
