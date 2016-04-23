@@ -14,13 +14,10 @@ tanda_auth = oauth.remote_app(
     app_key='TANDA'
 )
 
+
 @tanda_auth.tokengetter
 def get_token():
-    if 'tanda_oauth' in session:
-        resp = session['tanda_oauth']
-        return resp['access_token'], None
-    else:
-        return None, None
+    return session.get('oauth_token')
 
 
 # IMPLEMENT API METHODS BELOW HERE
@@ -28,8 +25,10 @@ def get_token():
 def get_users():
     return tanda_auth.get('users').data
 
+
 def get_schedules(ids, show_costs=False):
     return tanda_auth.get('schedules?ids={}&showCosts={}'.format(','.join(ids), show_costs))
+
 
 def get_managers_for_department(department_id):
     department = swappr.god_request.get('departments/' + str(department_id)).json()
