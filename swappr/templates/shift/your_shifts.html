@@ -40,13 +40,30 @@
         for (i = parseInt("{{start_time.hour}}"); i < parseInt("{{end_time.hour}}"); i++) {
             table.rows[i].cells["{{start_time.isoweekday()}}"].setAttribute("style", "background-color:green");
             table.rows[i].cells["{{start_time.isoweekday()}}"].onclick = function() {
-                $.post("/shift/offer/" + "{{shift['id']}}", {}, function(response) {console.log("Successful:" + response)});
+                console.log("Accepting...");
+                $("#accept").attr("onclick", function() {
+                    $.post("/shift/offer/" + "{{shift['id']}}", {}, function(response) {console.log("Successful:" + response)});
+                });
+                //$("#dialog").dialog()
+                $("#dialog").attr("style", "visibility: visible");
             }
         }
     </script>
 {% endfor %}
 </div>
 </div>
+</div>
+<script>
+</script>
+<div id="dialog" style="visibility: hidden">
+    <div class="row">
+    <p>Would you like to offer this shift?</p>
+    </div>
+    <div class="row">
+        <button id="decline">No</button>
+        <script>$("#decline").attr("onclick", function() {$("#decline").attr("style", "visibility:hidden")})</script>
+        <button id="accept">Yes</button>
+    </div>
 </div>
 
 {% endblock %}
