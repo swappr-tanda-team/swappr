@@ -2,16 +2,24 @@ from flask_oauthlib.client import OAuth
 from flask import session
 from swappr import app
 import swappr.god_request
+import os
+
+redirect_uri='http://localhost:9000/user/authorize'
+if ('REDIRECT_URI' in os.environ):
+    redirect_uri=os.environ['REDIRECT_URI']
 
 oauth = OAuth(app)
 tanda_auth = oauth.remote_app(
     'tanda',
     base_url='https://my.tanda.co/api/v2/',
     request_token_url=None,
-    request_token_params={'scope': 'me roster timesheet user cost'},
+    request_token_params={'scope': 'me roster timesheet user cost', redirect_uri: redirect_uri},
     access_token_url='https://my.tanda.co/api/oauth/token',
     authorize_url='https://my.tanda.co/api/oauth/authorize',
-    app_key='TANDA'
+    app_key='TANDA',
+    access_token_params={
+        redirect_uri:redirect_uri
+    }
 )
 
 
