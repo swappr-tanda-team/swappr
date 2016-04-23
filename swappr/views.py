@@ -3,6 +3,7 @@ Main entry point views.
 """
 import flask
 
+from flask import url_for, redirect
 from . import app
 from .database import db_session
 from .models import User
@@ -10,6 +11,7 @@ from .models import User
 
 @app.route('/')
 def index():
+    return redirect(url_for("shift.user_shifts"))
     return flask.render_template('home.html')
 
 

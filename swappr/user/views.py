@@ -1,7 +1,8 @@
 """
 Views for the User model.
 """
-from flask import Blueprint, render_template, url_for, redirect, session
+from flask_oauthlib.client import OAuthException
+from flask import Blueprint, render_template, url_for, redirect, session, request
 from flask_login import login_required, login_user, logout_user
 from swappr import login_manager, app
 from swappr.database import db_session
@@ -18,6 +19,10 @@ def user_loader(user_id):
 
 
 @user.route('/')
+def index():
+    return redirect(url_for('user.login'))
+
+
 @user.route('/account')
 @login_required
 def account():
@@ -43,10 +48,7 @@ def login():
     """
     Redirects to tanda oauth which redirects to /authorize
     """
-    if app.testing:
-        callback_url = url_for('user.authorize', _external=True)
-    else:
-        callback_url = 'TODO: put in the URL'
+    callback_url = url_for('user.authorize', _external=True)
     return auth.authorize(callback=callback_url)
 
 
@@ -68,9 +70,14 @@ def authorize():
     """
     resp = auth.authorized_response()
     if resp is None:
-        return redirect(url_for('index'))
-    session['tanda_oauth'] = resp
-    user_info = auth.get('users/me', token=(resp["access_token"],)).data
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    if isinstance(resp, OAuthException):
+        return 'Access denied: %s' % resp.message
+    session['oauth_token'] = (resp['access_token'], '')
+    user_info = auth.get('users/me').data
     u = db_session.query(User).filter(User.employee_id == user_info['id']).first()
     if not u:
         real_user_info = auth.get('users/' + str(user_info["id"]), token=(resp["access_token"],)).data
