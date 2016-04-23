@@ -14,6 +14,19 @@
 <div class="table-responsive">
 <table id="shiftTable" class="shiftTable table table-bordered table-condensed">
     <tr>
+        {% if shifts|length > 0 %}
+            {% set diff = timedelta(datetime.utcfromtimestamp(shifts[0]['adjusted_start']).weekday()) %}
+            {% set start_week = datetime.utcfromtimestamp(shifts[0]['adjusted_start']) - diff %}
+            <td>{{start_week.date()}} to
+            {{(start_week + timedelta(6)).date()}}</td>
+        {% else %}
+            <td></td>
+        {% endif %}
+        {% for i in range(0, 7) %}
+            <td colspan="24">{{days[i]}}</td>
+        {% endfor %}
+    </tr>
+    <tr>
         {% for i in range(-1, 24*7) %}
             {% if i > -1 %}
                 <td>{{i % 24}}:00</td>
