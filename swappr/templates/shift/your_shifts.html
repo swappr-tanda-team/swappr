@@ -7,6 +7,23 @@
         <h3>Your Shifts</h3>
     </div>
 </div>
+<div id="your_shifts" class="col-md-12">
+<table class="shiftTable" border="1">
+    {% for i in range(-1, 24) %}
+        <tr>
+            {% for j in range(-1, 7) %}
+                {% if j == -1 and i >= 0 %}
+                    <td>{{i}}:00</td>
+                {% elif i == -1 and j > -1 %}
+                    <td>{{days[j]}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+<!--
 <table class="shiftTable">
     <tr>
         <td colspan="2" class="borderedCell">
@@ -58,7 +75,9 @@
       {% for hour in range(0, 25) %}
         <line x1="{{0}}" y1="{{hour*scaling}}" x2="700" y2="{{hour*scaling}}" stroke="#000000"></line>
       {% endfor %}
+      -->
       <!-- height is shift length in hours * scaling, width is 100, x is day * 100, y is start time in hours * scaling -->
+<!--
       {% for shift in upcoming_shifts %}
         <rect height="{{(shift['adjusted_finish'] - shift['adjusted_start']) / 3600 * scaling}}" width="100"
               x="{{((shift['adjusted_start'] // 86400) % 7) * 100}}"
@@ -66,6 +85,7 @@
       {% endfor %}
     </svg>
   </div>
+  -->
 </div>
 </div>
 
